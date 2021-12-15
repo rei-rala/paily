@@ -39,7 +39,7 @@ const LoginForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoadi
         headers: {
           'Content-Type': 'application/json',
           "Access-Control-Allow-Origin": API_BASEURL,
-          "Access-Control-Allow-Credentials": true,
+          "Access-Control-Allow-Credentials": "true",
         }
       })
         .then((response: any) => {
