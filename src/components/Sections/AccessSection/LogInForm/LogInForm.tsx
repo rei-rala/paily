@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 
 import LoginFormGroup from "../FormGroup/FormGroup";
 
-import { URL_USERS, API_BASEURL } from "../../../../services/user";
+import { URL_USERS, API_BASEURL } from "../../../../services/urls";
 
 import axios from "axios";
 import { Link, Navigate } from "react-router-dom";

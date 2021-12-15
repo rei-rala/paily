@@ -4,7 +4,7 @@ import axios from "axios";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import LoginForm from "./LogInForm/LogInForm";
 import { User } from "../../../contexts/UserContext";
-import { URL_USERS, API_BASEURL } from "../../../services/user";
+import { URL_USERS, API_BASEURL } from "../../../services/urls";
 import { Window } from "../../../contexts/WindowContext";
 import { Modal } from "../../../contexts/ModalContext";
 

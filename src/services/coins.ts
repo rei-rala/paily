@@ -1,8 +1,7 @@
 import { current as coinList } from '../db/tempCoin.json'
 import axios, { AxiosRequestConfig } from 'axios'
 
-//const API_BASEURL = 'http://localhost:8080/api'
-const API_BASEURL = 'https://pai-ly.herokuapp.com/api'
+import { API_BASEURL } from './urls'
 
 export interface ICoin {
   name: string,

@@ -1,8 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-
-//const API_BASEURL = 'http://localhost:8080/api'
-export const API_BASEURL = 'https://pai-ly.herokuapp.com'
-export const URL_USERS = API_BASEURL + '/api/user'
+import { URL_USERS, API_BASEURL } from './urls'
 
 export interface IBalance {
   token: string,

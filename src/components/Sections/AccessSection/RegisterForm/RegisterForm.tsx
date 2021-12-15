@@ -8,7 +8,7 @@ import FormGroup from "../FormGroup/FormGroup";
 import { IAccessForm } from "../AccessSection";
 import { REGEX } from "../../../../utils";
 import axios from "axios";
-import { API_BASEURL, URL_USERS } from "../../../../services/user";
+import { API_BASEURL, URL_USERS } from "../../../../services/urls";
 import { Link, Navigate } from "react-router-dom";
 import Section from "../../Section";
 
