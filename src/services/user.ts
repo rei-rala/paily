@@ -29,7 +29,7 @@ export const logIn = async (credentials: { email: string, password: string }, si
     signal, headers: {
       'Content-Type': 'application/json',
       "Access-Control-Allow-Origin": API_BASEURL,
-      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Credentials": "true",
     }
   })
 }
@@ -47,7 +47,7 @@ export const register = async (credentials: { email: string, password: string },
     signal, headers: {
       'Content-Type': 'application/json',
       "Access-Control-Allow-Origin": API_BASEURL,
-      "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Credentials": "true",
     }
   })
 }
@@ -58,6 +58,6 @@ export const APIlogOut = (signal?: any) => axios.post(`${URL_USERS}/logout`, {},
   headers: {
     'Content-Type': 'application/json',
     "Access-Control-Allow-Origin": API_BASEURL,
-    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Credentials": "true",
   }
 }).catch()
