@@ -1,0 +1,138 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&family=Roboto+Mono&display=swap");
+
+:root {
+  --defaultFontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  --priceFontFamily: "Roboto Mono", monospace;
+
+  --headerFooterColor: hsl(36, 51%, 86%);
+  --headerHeight: 3.5rem;
+  --footerHeight: calc(var(--headerHeight) / 2.5);
+
+  --bkgColor: hsl(220, 13%, 18%);
+  --fontColor: hsl(36, 51%, 86%);
+  --borderColor: hsl(212, 42%, 82%);
+  --compBkgColor: hsl(0, 0%, 83%);
+
+  --btnColor: hsl(220, 13%, 18%);
+  --btnBkgColor: hsl(36, 52%, 86%);
+
+  --minOpacity: 0.9;
+  --animTimeSecs: 1s;
+
+  --blend: normal;
+}
+
+:root .lightTheme {
+  --bkgColor: hsl(39, 33%, 92%);
+  --fontColor: hsl(220, 13%, 18%);
+  --blend: difference;
+}
+
+:root .noAnimations {
+  --animTimeSecs: 0s;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  :root {
+    --animTimeSecs: 0s;
+  }
+}
+@media screen and (prefers-reduced-motion) {
+  :root {
+    --animTimeSecs: 0s;
+  }
+}
+:root .animations {
+  --animTimeSecs: 1s;
+}
+
+@keyframes Pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes Appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeToModal {
+  from {
+    background-color: hsla(0, 0%, 0%, 0);
+  }
+  to {
+    background-color: hsla(0, 0%, 0%, var(--minOpacity));
+  }
+}
+
+@keyframes Enlighten {
+  from {
+    filter: brightness(1);
+  }
+  to {
+    filter: brightness(5);
+  }
+}
+
+@keyframes BorderError {
+  from {
+    border-color: var(--borderColor);
+  }
+  to {
+    border-color: hsla(0, 100%, 50%, 1);
+  }
+}
+
+@keyframes MenuActive {
+  from {
+    transform: translateY(-200%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes Shake {
+  10%,
+  90% {
+    transform: rotate(-5deg);
+  }
+
+  20%,
+  80% {
+    transform: rotate(8deg);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: rotate(-5deg);
+  }
+
+  40%,
+  60% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes RotateRight {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

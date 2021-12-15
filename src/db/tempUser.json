@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "id": "asd",
+      "name": "Local Test",
+      "image": "https://c.tenor.com/JUiXaPL-bNoAAAAd/big-chungus.gif",
+      "balances": [
+        { "token": "BTC", "balance": 0.00012 },
+        { "token": "ETH", "balance": 15.2 },
+        { "token": "SOL", "balance": 12 },
+        { "token": "ADA", "balance": 2.2 },
+        { "token": "BNB", "balance": 0.5 },
+        { "token": "MATIC", "balance": 601 },
+        { "token": "DOT", "balance": 20 }
+      ]
+    },
+    {
+      "id": "abc",
+      "name": "abc!",
+      "image": "dfghdgfdhgf",
+      "balances": [
+        { "token": "BTC", "balance": 0.12345 },
+        { "token": "ETH", "balance": 0.12345 },
+        { "token": "SOL", "balance": 0.12345 },
+        { "token": "ADA", "balance": 0.12345 },
+        { "token": "BNB", "balance": 0.12345 },
+        { "token": "MATIC", "balance": 0.12345 },
+        { "token": "DOT", "balance": 0.12345 }
+      ]
+    },
+    {
+      "id": "123",
+      "name": "Uno de todo",
+      "image": "https://www.gifss.com/economia/bitcoin/images/bitcoin-06.gif",
+      "balances": [
+        { "token": "BTC", "balance": 1 },
+        { "token": "ETH", "balance": 1 },
+        { "token": "SOL", "balance": 1 },
+        { "token": "ADA", "balance": 1 },
+        { "token": "BNB", "balance": 1 },
+        { "token": "MATIC", "balance": 1 },
+        { "token": "DOT", "balance": 1 }
+      ]
+    }
+  ]
+}

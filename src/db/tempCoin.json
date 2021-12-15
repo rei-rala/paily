@@ -1,0 +1,60 @@
+{
+  "current": [
+    {
+      "name": "Bitcoin",
+      "token": "BTC",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+      "buy": "50985.09019",
+      "sell": "50731.43302",
+      "decimalPlaces": 18
+    },
+    {
+      "name": "Solana",
+      "token": "SOL",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+      "buy": "196.316",
+      "sell": "195.339",
+      "decimalPlaces": 18
+    },
+    {
+      "name": "Ethereum",
+      "token": "ETH",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
+      "buy": "4362.26464",
+      "sell": "4340.56183",
+      "decimalPlaces": 18
+    },
+    {
+      "name": "Cardano",
+      "token": "ADA",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png",
+      "buy": "1.467",
+      "sell": "1.459",
+      "decimalPlaces": 18
+    },
+    {
+      "name": "Binance Coin",
+      "token": "BNB",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
+      "buy": "594.926",
+      "sell": "591.967",
+      "decimalPlaces": 18
+    },
+    {
+      "name": "Polygon",
+      "token": "MATIC",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
+      "buy": "2.287",
+      "sell": "2.276",
+      "decimalPlaces": 18
+    },
+    {
+      "name": "Polkadot",
+      "token": "DOT",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6636.png",
+      "buy": "28.17",
+      "sell": "28.029",
+      "decimalPlaces": 18
+    }
+  ]
+}
