@@ -45,7 +45,7 @@ const AccessSection: React.FC<{ sectionStr?: string }> = ({ sectionStr }) => {
         withCredentials: true,
         headers: {
           "Access-Control-Allow-Origin": API_BASEURL,
-          "Access-Control-Allow-Credentials": true,
+          "Access-Control-Allow-Credentials": "true",
         }
       })
         .then((user) => {
