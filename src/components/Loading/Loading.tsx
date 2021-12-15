@@ -4,7 +4,7 @@ import LoadingStyled from "./LoadingStyled"
 const LoadingSvg = require('./Double Ring-5.3s-400px.svg')
 
 
-const Loading = () => {
+const Loading: React.FC<{ active?: boolean }> = ({ active }) => {
   const { loading } = useContext(Window)
 
   const [Wait, sWait] = useState(true)
@@ -17,7 +17,7 @@ const Loading = () => {
 
 
   return (
-    loading || Wait
+    loading || Wait || active
       ? <LoadingStyled className="loadingContainer">
         <img className='loadingImg' src={LoadingSvg} alt="Cargando..." title='Aguarde un momento' />
       </LoadingStyled>

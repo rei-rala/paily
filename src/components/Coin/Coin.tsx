@@ -10,6 +10,7 @@ import Detail from "./Detail/Detail";
 import Operate from "./Operate/Operate";
 
 import CoinStyled from "./CoinStyled";
+import Loading from "../Loading/Loading";
 
 const Coin = () => {
   const { currentUser, displayCurrency } = useContext(User)
@@ -116,7 +117,7 @@ const Coin = () => {
 
   return (
     loading
-      ? <></>
+      ? <Loading active />
       : error
         ? <Navigate replace to='/404' />
         : <Section

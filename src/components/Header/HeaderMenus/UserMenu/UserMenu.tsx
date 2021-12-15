@@ -14,6 +14,7 @@ const UserMenu: React.FC<IMenu> = ({ activeMenu, setActiveMenu, user }) => {
   const { setCurrentUser } = useContext(User)
   const { configModal } = useContext(Modal)
 
+
   const preLogOut = async () => {
     await APIlogOut()
       .finally(() => {
@@ -23,11 +24,10 @@ const UserMenu: React.FC<IMenu> = ({ activeMenu, setActiveMenu, user }) => {
       })
   }
 
-
   return (
     <UserMenuStyled className={`menu ${activeMenu}`}>
       {
-        user === undefined || user === null
+        !user
           ? <strong>Inicie sesion para administrar su cuenta</strong>
           : <>
             <div className="userMenuSection greeting">

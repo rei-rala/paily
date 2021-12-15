@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { User } from "../../../../contexts/UserContext";
 import { Window } from "../../../../contexts/WindowContext";
 import { ICoin } from '../../../../services/coins'
+import Loading from "../../../Loading/Loading";
 
 
 interface ICoinBoard {
@@ -21,7 +22,7 @@ const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
 
   return (
     loading || displayCurrency === undefined
-      ? <></>
+      ? <Loading active />
       : <>
         <Link
           className='coin'

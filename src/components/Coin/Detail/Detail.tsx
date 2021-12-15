@@ -1,6 +1,7 @@
 import React from "react";
 import { ICoin } from "../../../services/coins";
 import CurrencyModifier from "../../CurrencyModifier/CurrencyModifier";
+import Loading from "../../Loading/Loading";
 
 
 interface IDetail {
@@ -20,7 +21,7 @@ const Detail: React.FC<IDetail> = ({ coin, setOperate, currencyConversion: { cur
 
   return (
     currency === undefined
-      ? <></>
+      ? <Loading active />
       : <>
         <div className="coinDetails">
 

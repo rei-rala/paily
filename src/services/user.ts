@@ -8,8 +8,8 @@ export interface IBalance {
 
 export interface IUser {
   id: string,
+  email: string;
   image: string,
-  name: string
   balances: IBalance[]
 }
 

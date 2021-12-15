@@ -11,6 +11,7 @@ import axios from "axios";
 import { API_BASEURL, URL_USERS } from "../../../../services/urls";
 import { Link, Navigate } from "react-router-dom";
 import Section from "../../Section";
+import Loading from "../../../Loading/Loading";
 
 
 const registerSchema = Yup.object().shape({
@@ -66,7 +67,7 @@ const RegisterForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLo
 
   return (
     currentUser === undefined || loading
-      ? <></>
+      ? <Loading active />
       : currentUser
         ? <Navigate to='/main' />
         : <Section title="Registro" >

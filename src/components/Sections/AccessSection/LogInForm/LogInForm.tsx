@@ -11,6 +11,7 @@ import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import Section from "../../Section";
 import { IAccessForm } from "../AccessSection";
+import Loading from "../../../Loading/Loading";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -62,7 +63,7 @@ const LoginForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoadi
 
   return (
     currentUser === undefined || loading
-      ? <></>
+      ? <Loading />
       : currentUser
         ? <Navigate to='/main' />
         : <Section title="Iniciar sesión">
