@@ -1,7 +1,7 @@
 import { current as coinList } from '../db/tempCoin.json'
 import axios, { AxiosRequestConfig } from 'axios'
 
-import { API_BASEURL } from './urls'
+import { API_BASEURL, URL_CRIPTO } from './urls'
 
 export interface ICoin {
   name: string,
@@ -11,24 +11,28 @@ export interface ICoin {
   sell: number,
 }
 
-export const getTokenList: (signal?: any) => any = async (signal) => {
+export const getCriptoList: (signal?: any) => any = async (signal) => {
 
   const axConfig: AxiosRequestConfig = {
-    signal,
+    signal, headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": API_BASEURL,
+      "Access-Control-Allow-Credentials": "true",
+    }
   }
 
-  return await axios.post(`${API_BASEURL}/cripto`, axConfig)
+  return await axios.get(`${URL_CRIPTO}/latestprices`, axConfig)
 }
 
-export const getByToken: (tokenName: string, signal?: any) => any = async (tokenName, signal) => {
-  return fetch('../db/temp.json', { signal })
-    //.then(res=> res.json())
-    .then(x => {
-      const found = coinList.filter(coin => coin.token === tokenName)
-      return found.length === 0
-        ? undefined
-        : found.pop()
+export const getCriptoByToken: (token: string, signal?: any) => any = async (token, signal) => {
 
-    })
+  const axConfig: AxiosRequestConfig = {
+    signal, headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": API_BASEURL,
+      "Access-Control-Allow-Credentials": "true",
+    }
+  }
 
+  return await axios.get(`${URL_CRIPTO}/latestprices?token=${token}`, axConfig)
 }

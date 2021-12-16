@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Navigate } from "react-router-dom";
 import { Modal } from "../../../contexts/ModalContext";
-import { getByToken } from "../../../services/coins";
+import { getCriptoByToken } from "../../../services/coins";
 
 
 interface IOperate {
@@ -36,7 +36,7 @@ const Operate: React.FC<IOperate> = ({ operation, setOperate, currencyConversion
   useEffect(() => {
     const tokenName = typeof coinToken === 'string' && (coinToken).toUpperCase()
     if (!!coinToken && !!tokenName) {
-      getByToken(tokenName)
+      getCriptoByToken(tokenName)
         .then(setCoinDetails)
         .catch(() => setValidOperation(false))
     }

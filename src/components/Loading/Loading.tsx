@@ -17,7 +17,7 @@ const Loading: React.FC<{ active?: boolean }> = ({ active }) => {
 
 
   return (
-    loading || Wait || active
+    active
       ? <LoadingStyled className="loadingContainer">
         <img className='loadingImg' src={LoadingSvg} alt="Cargando..." title='Aguarde un momento' />
       </LoadingStyled>

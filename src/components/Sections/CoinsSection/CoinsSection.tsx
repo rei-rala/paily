@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getTokenList, ICoin } from '../../../services/coins'
+import { getCriptoList, ICoin } from '../../../services/coins'
 
 import { Modal } from "../../../contexts/ModalContext";
 import Section from "../Section";
@@ -11,6 +11,7 @@ import CurrencyModifier from "../../CurrencyModifier/CurrencyModifier";
 import { User } from "../../../contexts/UserContext";
 import UserBalance from "../../UserBalance/UserBalance";
 import { Window } from "../../../contexts/WindowContext";
+import CoinSectionStyled from "./CoinsSectionStyled";
 
 interface IBalance {
   token: string,
@@ -32,10 +33,10 @@ const CoinsSection: React.FC = () => {
     const controller = new AbortController()
     const signal = controller.signal
 
-    getTokenList(signal)
-      .then((res: ICoin[]) => {
-        console.log(res)
-        setCoinsData(res)
+    getCriptoList(signal)
+      .then((res: any) => {
+        console.log(res.data)
+        setCoinsData(res.data[0].details)
       })
       .catch((err: any) => { })
       .finally(() => setLoading(false))
@@ -56,7 +57,7 @@ const CoinsSection: React.FC = () => {
     <Section
       title='Cripto'
     >
-      <div className='coin__container'>
+      <CoinSectionStyled>
         {
           coinsData?.length > 0
             ? <>
@@ -69,7 +70,7 @@ const CoinsSection: React.FC = () => {
                       currentUser.balances.length > 1
                         ? <span>
                           {
-                            (currentUser.balances.reduce((prev: number, curr: IBalance) => prev + (curr.balance * (coinsData.find((x) => x.token === curr.token)?.sell || 1) * (displayCurrency.price)), 0)).toFixed(5)
+                            (currentUser.balances.reduce((prev: number, curr: IBalance) => prev + (curr.balance * (coinsData.find((x) => x.token === curr.token)?.sell || 1) * (displayCurrency.price)), 0)).toFixed(2)
                           }
                           {' '}
                           {displayCurrency.currency}
@@ -101,7 +102,7 @@ const CoinsSection: React.FC = () => {
               </div>
             </>
         }
-      </div>
+      </CoinSectionStyled>
     </ Section >
   )
 }

@@ -31,7 +31,7 @@ const Detail: React.FC<IDetail> = ({ coin, setOperate, currencyConversion: { cur
             <span className='coinDetails--main--userBalance'>{
               coin.token === currency
                 ? null
-                : `${currency} ${(userBalance.balance * coin.sell * price).toFixed(5)}`
+                : `${currency} ${(userBalance.balance * coin.sell * price).toFixed(2)}`
             }
             </span>
           </div>
@@ -64,8 +64,8 @@ const Detail: React.FC<IDetail> = ({ coin, setOperate, currencyConversion: { cur
                 coin.token === currency
                   ? <></>
                   : <>
-                    <span>  Buy <strong className='price'> {(price * coin.buy).toFixed(5)} </strong>{currency}</span>
-                    <span> Sell <strong className='price'> {(price * coin.sell).toFixed(5)} </strong>{currency}</span>
+                    <span>  Buy <strong className='price'> {(price * coin.buy).toFixed(2)} </strong>{currency}</span>
+                    <span> Sell <strong className='price'> {(price * coin.sell).toFixed(2)} </strong>{currency}</span>
                   </>
               }
             </div>

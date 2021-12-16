@@ -1,6 +1,7 @@
 {
   "current": [
     {
+      "id": "bitcoin",
       "name": "Bitcoin",
       "token": "BTC",
       "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
@@ -9,14 +10,7 @@
       "decimalPlaces": 18
     },
     {
-      "name": "Solana",
-      "token": "SOL",
-      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
-      "buy": "196.316",
-      "sell": "195.339",
-      "decimalPlaces": 18
-    },
-    {
+      "id": "ethereum",
       "name": "Ethereum",
       "token": "ETH",
       "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
@@ -25,14 +19,7 @@
       "decimalPlaces": 18
     },
     {
-      "name": "Cardano",
-      "token": "ADA",
-      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png",
-      "buy": "1.467",
-      "sell": "1.459",
-      "decimalPlaces": 18
-    },
-    {
+      "id": "binancecoin",
       "name": "Binance Coin",
       "token": "BNB",
       "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
@@ -41,19 +28,39 @@
       "decimalPlaces": 18
     },
     {
-      "name": "Polygon",
-      "token": "MATIC",
-      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
-      "buy": "2.287",
-      "sell": "2.276",
+      "id": "solana",
+      "name": "Solana",
+      "token": "SOL",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+      "buy": "196.316",
+      "sell": "195.339",
       "decimalPlaces": 18
     },
     {
+      "id": "cardano",
+      "name": "Cardano",
+      "token": "ADA",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png",
+      "buy": "1.467",
+      "sell": "1.459",
+      "decimalPlaces": 18
+    },
+    {
+      "id": "polkadot",
       "name": "Polkadot",
       "token": "DOT",
       "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6636.png",
       "buy": "28.17",
       "sell": "28.029",
+      "decimalPlaces": 18
+    },
+    {
+      "id": "matic-network",
+      "name": "Polygon",
+      "token": "MATIC",
+      "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
+      "buy": "2.287",
+      "sell": "2.276",
       "decimalPlaces": 18
     }
   ]

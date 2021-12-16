@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { User } from "../../../../contexts/UserContext";
 import { Window } from "../../../../contexts/WindowContext";
 import { ICoin } from '../../../../services/coins'
 import Loading from "../../../Loading/Loading";
 
+import { current } from '../../../../db/tempCoin.json'
 
 interface ICoinBoard {
   shownCoin: ICoin
@@ -13,6 +14,12 @@ interface ICoinBoard {
 const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
   const { loading, setLoading } = useContext(Window)
   const { displayCurrency } = useContext(User)
+
+  const coinDetails = {
+    ...shownCoin,
+    image: current.find(x => x.token === shownCoin.token ?? ' ')?.image || '',
+    sell: shownCoin.buy * 0.9
+  }
 
   useEffect(() => {
     displayCurrency === undefined
@@ -26,19 +33,19 @@ const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
       : <>
         <Link
           className='coin'
-          to={`/cripto/${shownCoin.token}`
+          to={`/cripto/${coinDetails.token}`
           }>
           <fieldset>
-            <legend> {shownCoin.name} - {shownCoin.token}</legend>
+            <legend> {coinDetails.name} - {coinDetails.token}</legend>
 
 
             <div className="priceContainer">
 
-              <img src={shownCoin.image} alt={shownCoin.name} />
+              <img src={coinDetails.image} alt={coinDetails.name} />
 
               <div className='operatePrices'>
-                <div>  <span> Buy  </span><span className='price'>{(shownCoin.buy * displayCurrency.price).toFixed(5)} </span> <span className='price'>{displayCurrency.currency} </span> </div>
-                <div>  <span> Sell </span><span className='price'>{(shownCoin.sell * displayCurrency.price).toFixed(5)}</span> <span className='price'>{displayCurrency.currency} </span> </div>
+                <div>  <span> Buy  </span><span className='price'>{displayCurrency.currency === coinDetails.token ? "-" : (coinDetails.buy * displayCurrency.price).toFixed(2)} </span> <span className='price'>{displayCurrency.currency} </span> </div>
+                <div>  <span> Sell </span><span className='price'>{displayCurrency.currency === coinDetails.token ? "-" : (coinDetails.sell * displayCurrency.price).toFixed(2)}</span> <span className='price'>{displayCurrency.currency} </span> </div>
               </div>
             </div>
           </fieldset>
