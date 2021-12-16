@@ -75,7 +75,7 @@ const GlobalStyles = createGlobalStyle`
   :not(.headerTitle) a::visited{
     color: var(--fontColor);
   }
-
+  
   a,
   a:visited {
     text-decoration: none;
@@ -83,13 +83,22 @@ const GlobalStyles = createGlobalStyle`
 
   input {
     color: var(--btnColor);
-    background-color:var(--compBkgColor);
+    background-color: var(--compBkgColor);
     border-radius:1rem;
     text-align:center;
   }
 
+  input:disabled {
+    background-color: var(--btnColor);
+    color: var(--compBkgColor);
+  }
+
   img {
     object-fit: cover;
+  }
+
+  .faint {
+    opacity: 0.5;
   }
 
   .sep {

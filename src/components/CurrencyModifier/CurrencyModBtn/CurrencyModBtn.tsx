@@ -5,7 +5,8 @@ import { User } from "../../../contexts/UserContext";
 interface ICurrencyModBtn {
   currency: {
     currency: string,
-    price: number
+    price: number,
+    digits: number
   }
 }
 

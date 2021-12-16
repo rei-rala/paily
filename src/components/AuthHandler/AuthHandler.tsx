@@ -15,7 +15,7 @@ const AuthHandler: React.FC<IAuthHandler> = ({ protectedPath }) => {
 
   return (
     loading || currentUser === undefined
-      ? <Loading active />
+      ? <></>
       : currentUser === null
         ? <Navigate to='/login' replace />
         : <Navigate to={protectedPath || '/main'} />

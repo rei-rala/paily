@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import React, { useContext, useState } from "react";
 
 import RegisterForm from "./RegisterForm/RegisterForm";
 import LoginForm from "./LogInForm/LogInForm";
 import { User } from "../../../contexts/UserContext";
-import { URL_USERS, API_BASEURL } from "../../../services/urls";
 import { Window } from "../../../contexts/WindowContext";
 import { Modal } from "../../../contexts/ModalContext";
 
@@ -30,36 +28,10 @@ const AccessSection: React.FC<{ sectionStr?: string }> = ({ sectionStr }) => {
   const { currentUser, setCurrentUser } = useContext(User)
   const { configModal } = useContext(Modal)
 
-  const notLoggedIn = currentUser === null
 
   const [credentials, setCredentials] = useState<ICredentials | null>(null)
   const [cancel, setCancel] = useState(false)
 
-
-  useEffect(() => {
-    const sessionAbortController = new AbortController()
-
-    if (notLoggedIn) {
-      axios.get(URL_USERS, {
-        signal: sessionAbortController.signal,
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Origin": API_BASEURL,
-          "Access-Control-Allow-Credentials": "true",
-        }
-      })
-        .then((user) => {
-          if (user) {
-            setCurrentUser(user.data)
-          }
-        })
-        .catch(err => { console.info('No se recupero sesion') })
-    }
-
-    return () => {
-      sessionAbortController.abort()
-    }
-  }, [notLoggedIn, setCurrentUser])
 
   return (
     sectionStr === "register"

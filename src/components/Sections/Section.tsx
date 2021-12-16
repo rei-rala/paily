@@ -6,7 +6,6 @@ import { faArrowLeft, faArrowCircleUp } from "@fortawesome/free-solid-svg-icons"
 import { SectionStyled } from "./SectionStyled";
 import { Window } from "../../contexts/WindowContext";
 import { User } from "../../contexts/UserContext";
-import Loading from "../Loading/Loading";
 
 interface ISection {
   children?: React.ReactNode;
@@ -25,16 +24,16 @@ const Section: React.FC<ISection> = ({ children, className, title }, props) => {
   const goBack = () => navigate(-1)
 
   useEffect(() => {
-    const lastPath = localStorage.getItem('lastPath')
+    const lastPath = sessionStorage.getItem('lastPath')
     setHideGoBack(
       (lastPath !== '/login' && lastPath !== '/register')
-      || ['/', '/404', '/login'].some(path => path === currentPath)
+      //|| ['/', '/404', '/login', '/register'].every(path => path !== currentPath)
     )
   }, [currentPath])
 
   return (
     currentUser === undefined
-      ? <Loading active />
+      ? <></>
       : (currentUser === null || currentUser === false) && ['/login', '/register', '/404'].every(path => path !== currentPath)
         ? <Navigate to='/login' replace />
         : <SectionStyled className={`section ${className ?? ''}`

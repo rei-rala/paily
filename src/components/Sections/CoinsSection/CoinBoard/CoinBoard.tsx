@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { User } from "../../../../contexts/UserContext";
 import { Window } from "../../../../contexts/WindowContext";
 import { ICoin } from '../../../../services/coins'
-import Loading from "../../../Loading/Loading";
 
 import { current } from '../../../../db/tempCoin.json'
 
@@ -13,23 +12,23 @@ interface ICoinBoard {
 
 const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
   const { loading, setLoading } = useContext(Window)
-  const { displayCurrency } = useContext(User)
+  const { displayCurrency: { currency, price, digits } } = useContext(User)
 
   const coinDetails = {
     ...shownCoin,
-    image: current.find(x => x.token === shownCoin.token ?? ' ')?.image || '',
-    sell: shownCoin.buy * 0.9
+    sell: shownCoin.buy * 0.925 ?? 0,
+    image: current.find(x => x.token === shownCoin.token ?? ' ')?.image || ''
   }
 
   useEffect(() => {
-    displayCurrency === undefined
+    currency === undefined
       ? setLoading(true)
       : setLoading(false)
-  }, [displayCurrency, setLoading])
+  }, [currency, setLoading])
 
   return (
-    loading || displayCurrency === undefined
-      ? <Loading active />
+    loading || currency === undefined
+      ? <></>
       : <>
         <Link
           className='coin'
@@ -44,8 +43,8 @@ const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
               <img src={coinDetails.image} alt={coinDetails.name} />
 
               <div className='operatePrices'>
-                <div>  <span> Buy  </span><span className='price'>{displayCurrency.currency === coinDetails.token ? "-" : (coinDetails.buy * displayCurrency.price).toFixed(2)} </span> <span className='price'>{displayCurrency.currency} </span> </div>
-                <div>  <span> Sell </span><span className='price'>{displayCurrency.currency === coinDetails.token ? "-" : (coinDetails.sell * displayCurrency.price).toFixed(2)}</span> <span className='price'>{displayCurrency.currency} </span> </div>
+                <div>  <span> Buy  </span><span className='price'>{currency === coinDetails.token ? "-" : (coinDetails.buy * price).toFixed(digits)} </span> <span className='price'>{currency} </span> </div>
+                <div>  <span> Sell </span><span className='price'>{currency === coinDetails.token ? "-" : (coinDetails.sell * price).toFixed(digits)}</span> <span className='price'>{currency} </span> </div>
               </div>
             </div>
           </fieldset>

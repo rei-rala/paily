@@ -1,6 +1,4 @@
-import { current as coinList } from '../db/tempCoin.json'
 import axios, { AxiosRequestConfig } from 'axios'
-
 import { API_BASEURL, URL_CRIPTO } from './urls'
 
 export interface ICoin {

@@ -1,27 +1,18 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { Window } from "../../contexts/WindowContext"
 import LoadingStyled from "./LoadingStyled"
 const LoadingSvg = require('./Double Ring-5.3s-400px.svg')
 
 
-const Loading: React.FC<{ active?: boolean }> = ({ active }) => {
+const Loading: React.FC<{ active?: boolean }> = () => {
   const { loading } = useContext(Window)
 
-  const [Wait, sWait] = useState(true)
-
-  useEffect(() => {
-    setTimeout(() => {
-      sWait(false)
-    }, 500);
-  }, [])
-
-
   return (
-    active
+    loading
       ? <LoadingStyled className="loadingContainer">
         <img className='loadingImg' src={LoadingSvg} alt="Cargando..." title='Aguarde un momento' />
       </LoadingStyled>
-      : <></>
+      : null
   )
 }
 

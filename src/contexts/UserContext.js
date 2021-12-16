@@ -1,4 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { URL_USERS, API_BASEURL } from '../services/urls'
+
 import { Window } from "./WindowContext";
 
 export const User = createContext();
@@ -6,18 +9,21 @@ export const User = createContext();
 const currencies = [
   {
     currency: 'USDT',
-    price: 1
+    price: 1,
+    digits: 2
   },
   {
     currency: 'ARS',
-    price: 205
+    price: 205,
+    digits: 2
   }
 ]
 
 export const UserContext = ({ children }) => {
-  const { scrollTop, /* currentPath */ } = useContext(Window)
+  const { scrollTop, setLoading } = useContext(Window)
 
   const [currentUser, setCurrentUser] = useState(null)
+  const notLoggedIn = currentUser === null || currentUser === undefined
 
   const [darkTheme, setDarkTheme] = useState(false)
   const [animations, setAnimations] = useState(false)
@@ -36,6 +42,33 @@ export const UserContext = ({ children }) => {
     localStorage.setItem('displayCurrency', newCurrency.currency)
     setDisplayCurrency(newCurrency)
   }
+
+  useEffect(() => {
+    const sessionAbortController = new AbortController()
+
+    if (notLoggedIn) {
+      setLoading(true)
+      axios.get(URL_USERS, {
+        signal: sessionAbortController.signal,
+        withCredentials: true,
+        headers: {
+          "Access-Control-Allow-Origin": API_BASEURL,
+          "Access-Control-Allow-Credentials": "true",
+        }
+      })
+        .then((user) => {
+          if (user) {
+            setCurrentUser(user.data)
+          }
+        })
+        .catch(err => { console.info('No se recupero sesion') })
+        .finally(() => setLoading(false))
+    }
+
+    return () => {
+      sessionAbortController.abort()
+    }
+  }, [notLoggedIn, setCurrentUser, setLoading])
 
   useEffect(() => {
     const currencyLocal = new Promise((res, rej) => {
@@ -60,7 +93,7 @@ export const UserContext = ({ children }) => {
       const localDarkSetting = JSON.parse(localStorage.getItem('darkTheme'))
       localDarkSetting === true || localDarkSetting === false
         ? res(localDarkSetting)
-        : rej('Dark theme desactivado o no valido')
+        : rej('Dark theme no valido')
     })
       .then(setDarkTheme)
       .catch(() => localStorage.setItem('darkTheme', false))
@@ -70,7 +103,7 @@ export const UserContext = ({ children }) => {
       const localNoAnimSetting = JSON.parse(localStorage.getItem('noAnimations'))
       localNoAnimSetting === true || localNoAnimSetting === false
         ? res(localNoAnimSetting)
-        : rej('No animations desactivado o no valido')
+        : rej('No animations no valido')
     })
       .then(setAnimations)
       .catch(() => localStorage.setItem('noAnimations', false))

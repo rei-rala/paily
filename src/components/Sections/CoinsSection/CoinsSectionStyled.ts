@@ -1,6 +1,27 @@
 import styled from "styled-components";
 
 const CoinSectionStyled = styled.div`
+
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  gap: 1rem;
+
+  strong {
+    margin: auto;
+  }
+
+  .resume {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    span {
+      font-size:larger;
+      font-family: var(--priceFontFamily);
+    }
+  }
+  
   .coin {
       width: 95%;
       transition: transform calc(var(--animTimeSecs)* 0.5);

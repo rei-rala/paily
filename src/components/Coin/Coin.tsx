@@ -10,7 +10,6 @@ import Detail from "./Detail/Detail";
 import Operate from "./Operate/Operate";
 
 import CoinStyled from "./CoinStyled";
-import Loading from "../Loading/Loading";
 
 import { current } from '../../db/tempCoin.json'
 
@@ -30,7 +29,8 @@ const Coin = () => {
 
   const [currentDisplayCurrency, setCurrentDisplayCurrency] = useState({
     currency: '?',
-    price: -1
+    price: -1,
+    digits: 2
   })
 
   const [currentUserBalance, setCurrentUserBalance] = useState({
@@ -61,13 +61,13 @@ const Coin = () => {
         const tokenName = typeof coinToken === 'string' ? (coinToken).toUpperCase() : ''
         if ((!!coinToken || !!tokenName || tokenName === '') && !cancel) {
           getCriptoByToken(tokenName, signal)
-            .then((response: any) => {
-              if (response.data[0]) {
-                console.log(response)
+            .then(({ data }) => {
+              console.log(data)
+              if (data) {
                 setCurrentCoinDetails({
-                  ...response.data[0],
-                  sell: response.data[0].buy * 0.9,
-                  image: current.find(x => x.token === response.data[0].token ?? '')?.image || '',
+                  ...data,
+                  sell: data.buy * 0.925 ?? 0,
+                  image: current.find(x => x.token === data.token ?? '')?.image || '',
                 })
                 resolve(true)
               }
@@ -77,38 +77,32 @@ const Coin = () => {
         }
       })
 
-      /*       const awaitUserData = new Promise((resolve, reject) => {
-              if (currentUser?.balances && currentCoinDetails.token !== '?') {
-                const found = currentUser.balances.find((x: ICoin) => x.token === currentCoinDetails.token)
-                if (found) {
-                  setCurrentUserBalance(found)
-                  resolve(true)
-                } else {
-                  reject('Error')
-                }
-              }
-            }) */
+      const awaitUserData = new Promise((resolve, reject) => {
+        if (currentUser?.balances && currentCoinDetails.token !== '?') {
+          const found = currentUser.balances.find((x: ICoin) => x.token === currentCoinDetails.token)
+          if (found) {
+            setCurrentUserBalance(found)
+            resolve(true)
+          } else {
+            reject('Error')
+          }
+        }
+      }).catch(x => x)
 
       const awaitCurrencyDisplay = new Promise((resolve) => {
         if (currentDisplayCurrency.currency !== '?' && currentDisplayCurrency.price > 0) { resolve(true) }
       })
 
-      const slowResponse = new Promise((resolve) => {
-        const time = process.env.slowed === 'true' ? 2000 : 0
 
-        timeout = setTimeout(() => {
-          resolve(true)
-        }, time)
-      })
+      console.log({ awaitTokenData, awaitUserData, awaitCurrencyDisplay })
 
-      const promises = [awaitTokenData, /* awaitUserData */, awaitCurrencyDisplay, slowResponse]
-
+      const promises = [awaitTokenData, /* awaitUserData, */ awaitCurrencyDisplay]
       Promise.all(promises)
-        .then(() => setLoaded(true))
         .catch((v) => {
           setError(true)
           console.log(v)
         })
+        .then(() => setLoaded(true))
         .finally(() => setLoading(false))
     }
 
@@ -121,12 +115,13 @@ const Coin = () => {
         if (timeout !== undefined) { clearTimeout(timeout) }
         setLoading(false)
       }
+      setCancel(true)
     }
-  }, [coinToken, currentUser, currentCoinDetails, currentDisplayCurrency, loaded, setLoading])
+  }, [coinToken, currentUser, currentCoinDetails, currentDisplayCurrency, loaded, cancel, setLoading])
 
   return (
-    loading
-      ? <Loading active />
+    loading || !loaded
+      ? <></>
       : error
         ? <Navigate replace to='/404' />
         : <Section

@@ -20,6 +20,8 @@ export const WindowContext = (props) => {
     sessionStorage.setItem('currentPath', location)
     setCurrentPath(location)
     scrollTop()
+
+    return () => sessionStorage.setItem('lastPath', location)
   }, [location])
 
   useEffect(() => {

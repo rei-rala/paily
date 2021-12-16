@@ -1,15 +1,14 @@
 import React from "react";
 import { ICoin } from "../../../services/coins";
 import CurrencyModifier from "../../CurrencyModifier/CurrencyModifier";
-import Loading from "../../Loading/Loading";
-
 
 interface IDetail {
   coin: ICoin,
   setOperate: React.Dispatch<React.SetStateAction<string>>,
   currencyConversion: {
     currency: string,
-    price: number
+    price: number,
+    digits: number
   },
   userBalance: {
     token: string,
@@ -17,22 +16,21 @@ interface IDetail {
   }
 }
 
-const Detail: React.FC<IDetail> = ({ coin, setOperate, currencyConversion: { currency, price }, userBalance }) => {
+const Detail: React.FC<IDetail> = ({ coin, setOperate, currencyConversion: { currency, price, digits }, userBalance }) => {
 
   return (
     currency === undefined
-      ? <Loading active />
+      ? <></>
       : <>
         <div className="coinDetails">
 
           <div className='coinDetails--main'>
             <img className='coinDetails--image' src={coin.image} alt={coin.name} /> <h3>{coin.token}</h3>
-            <strong> {userBalance.balance} {coin.token}</strong>
-            <span className='coinDetails--main--userBalance'>{
-              coin.token === currency
-                ? null
-                : `${currency} ${(userBalance.balance * coin.sell * price).toFixed(2)}`
-            }
+            <span>Tu saldo <strong> {userBalance.balance === -1 ? 0 : userBalance.balance} {coin.token}</strong></span>
+            <span className='coinDetails--main--userBalance'>
+              {
+                coin.token === currency ? null : `${currency} ${(userBalance.balance === -1 ? 0 : userBalance.balance * coin.sell * price).toFixed(digits)}`
+              }
             </span>
           </div>
 
@@ -64,8 +62,8 @@ const Detail: React.FC<IDetail> = ({ coin, setOperate, currencyConversion: { cur
                 coin.token === currency
                   ? <></>
                   : <>
-                    <span>  Buy <strong className='price'> {(price * coin.buy).toFixed(2)} </strong>{currency}</span>
-                    <span> Sell <strong className='price'> {(price * coin.sell).toFixed(2)} </strong>{currency}</span>
+                    <span>  Buy <strong className='price'> {(price * coin.buy).toFixed(digits)} </strong>{currency}</span>
+                    <span> Sell <strong className='price'> {(price * coin.sell).toFixed(digits)} </strong>{currency}</span>
                   </>
               }
             </div>

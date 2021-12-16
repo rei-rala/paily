@@ -14,12 +14,13 @@ const LoadingStyled = styled.div`
     height: 100% !important;
 
     z-index: 99999;
-    background-color: rgba(0, 0, 0, var(--minOpacity));
-    animation: Appear calc(var(--animTimeSecs)* 2) 1 ease-in-out;
+    background: hsla(var(--compBkgColor), 0.75); 
+    animation: Appear calc(var(--animTimeSecs)* 1) 1 ease-in-out;
 
     img.loadingImg {
-      max-width: 50vw;
-      max-height: 50vh;
+      max-width: 60vw;
+      max-height: 60vh;
+      object-fit: contain;
 
       animation: Enlighten calc(var(--animTimeSecs)* 2) Pulse ease-in-out;
       transform: translateY(-20%);
