@@ -57,6 +57,7 @@ export const UserContext = ({ children }) => {
         }
       })
         .then((user) => {
+          console.log(user)
           if (user) {
             setCurrentUser(user.data)
           }

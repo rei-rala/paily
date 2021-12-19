@@ -32,8 +32,8 @@ const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
       : <>
         <Link
           className='coin'
-          to={`/cripto/${coinDetails.token}`
-          }>
+          to={`/cripto/${coinDetails.token}`}
+        >
           <fieldset>
             <legend> {coinDetails.name} - {coinDetails.token}</legend>
 

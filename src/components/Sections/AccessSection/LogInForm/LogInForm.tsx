@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
+import axios from "axios";
+import { Link, Navigate } from "react-router-dom";
 
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 
-import LoginFormGroup from "../FormGroup/FormGroup";
 
-import { URL_USERS, API_BASEURL } from "../../../../services/urls";
-
-import axios from "axios";
-import { Link, Navigate } from "react-router-dom";
 import Section from "../../Section";
+import LoginFormGroup from "../FormGroup/FormGroup";
 import { IAccessForm } from "../AccessSection";
+import { API_BASEURL, URL_USERS } from "../../../../services";
+
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()

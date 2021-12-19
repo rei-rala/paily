@@ -2,13 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom'
-import { WindowContext } from './contexts/WindowContext';
-import { UserContext } from './contexts/UserContext'
-import { ModalContext } from './contexts/ModalContext';
+import { WindowContext, UserContext, ModalContext } from './contexts';
 
 import './GlobalStylesResources.css'
 import GlobalStyles from './GlobalStyles';
-
 
 //import reportWebVitals from './reportWebVitals';
 
@@ -19,8 +16,8 @@ ReactDOM.render(
         <UserContext>
           <ModalContext>
 
-            <GlobalStyles />
-            <App />
+              <GlobalStyles />
+              <App />
 
           </ModalContext >
         </UserContext>

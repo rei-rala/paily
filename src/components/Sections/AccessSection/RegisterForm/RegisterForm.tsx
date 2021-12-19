@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-
+import axios from "axios";
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
-
-import FormGroup from "../FormGroup/FormGroup";
-
-import { IAccessForm } from "../AccessSection";
-import { REGEX } from "../../../../utils";
-import axios from "axios";
-import { API_BASEURL, URL_USERS } from "../../../../services/urls";
 import { Link, Navigate } from "react-router-dom";
+
+
 import Section from "../../Section";
+import FormGroup from "../FormGroup/FormGroup";
+import { IAccessForm } from "../AccessSection";
+
+import { REGEX } from "../../../../utils";
+import { API_BASEURL, URL_USERS } from "../../../../services";
 
 
 const registerSchema = Yup.object().shape({

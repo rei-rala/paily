@@ -9,7 +9,7 @@ import Section from '../Section'
 import { User } from "../../../contexts/UserContext";
 // import { REGEX } from '../../../utils';
 import axios from 'axios';
-import { API_BASEURL, URL_USERS } from '../../../services/urls';
+import { API_BASEURL, URL_USERS } from '../../../services';
 import { Window } from '../../../contexts/WindowContext';
 
 //const defImgUrl = "https://icon-library.com/images/no-photo-available-icon/no-photo-available-icon-20.jpg"

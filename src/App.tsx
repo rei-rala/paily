@@ -25,7 +25,7 @@ function App() {
     <div
       className={
         `app
-        ${darkTheme === undefined || darkTheme ? 'darkTheme' : 'lightTheme'}
+        ${!darkTheme ? 'lightTheme' : 'darkTheme'}
         ${animations ? 'animations' : 'noAnimations'}`
       }
     >

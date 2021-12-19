@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getCriptoList, ICoin } from '../../../services/coins'
+import { ICoin } from '../../../services/coins'
 
 import { Modal } from "../../../contexts/ModalContext";
 import Section from "../Section";
@@ -13,10 +13,21 @@ import UserBalance from "../../UserBalance/UserBalance";
 import { Window } from "../../../contexts/WindowContext";
 import CoinSectionStyled from "./CoinsSectionStyled";
 
+
+import { io } from "socket.io-client";
+import { API_BASEURL } from '../../../services'
 interface IBalance {
   token: string,
   balance: number,
 }
+
+interface ICoinDataSocket {
+  timestamp: number,
+  details: ICoin[],
+}
+
+let socket: any;
+
 
 const CoinsSection: React.FC = () => {
   const { configModal } = useContext(Modal)
@@ -29,27 +40,20 @@ const CoinsSection: React.FC = () => {
   const [coinsData, setCoinsData] = useState<ICoin[]>([])
 
   useEffect(() => {
-    setLoading(true)
-    const controller = new AbortController()
-    const signal = controller.signal
+    coinsData.length === 0 && setLoading(true)
+    coinsData.length > 0 && setLoading(false)
+  }, [coinsData, setLoading])
 
-    getCriptoList(signal)
-      .then((res: any) => {
-        setCoinsData(res.data.details)
-      })
-      .catch((err: any) => { })
-      .finally(() => setLoading(false))
 
-    return () => {
-      try {
-        controller.abort()
-      } catch (err) {
-        console.log('Coin Section', err)
-      } finally {
-        setLoading(false)
-      }
-    }
-  }, [setLoading])
+  useEffect(() => {
+    socket = io(API_BASEURL)
+
+    socket.on('criptoPrices', (coinsData: ICoinDataSocket) => {
+      setCoinsData(coinsData.details)
+      console.info(coinsData)
+    })
+  }, [])
+
 
 
   return (
