@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import { URL_USERS, API_BASEURL } from './urls'
+import axios, { AxiosResponse } from 'axios'
+import { URL_USERS, axDefaultConfig } from './'
 
 export interface IBalance {
   token: string,
@@ -13,48 +13,33 @@ export interface IUser {
   balances: IBalance[]
 }
 
-export const logIn = async (credentials: { email: string, password: string }, signal?: any) => {
 
-  const axConfig: AxiosRequestConfig = {
-    data: {
-      email: credentials.email,
-      password: credentials.password
-    }
-  }
+type AuthFunction = (credentials?: { email?: string, password?: string }, action?: string, signal?: any, payload?: any) => Promise<AxiosResponse<any>>
+type LogOut = (signal?: any, payload?: any) => Promise<AxiosResponse<any>>
+type EditFunction = LogOut
 
-  return await axios.post(`${URL_USERS}/login`, axConfig, {
-    signal, headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": API_BASEURL,
-      "Access-Control-Allow-Credentials": "true",
-    }
+
+
+export const authenticate: AuthFunction = async (credentials, action, signal) => {
+
+  return axios.post(`${URL_USERS}/${action ?? 'login'}`, credentials, {
+    signal: signal,
+    ...axDefaultConfig
   })
 }
 
+export const APIlogOut: LogOut = (signal) => {
 
-export const register = async (credentials: { email: string, password: string }, signal?: any) => {
-
-  const axConfig: AxiosRequestConfig = {
-    data: {
-      email: credentials.email,
-      password: credentials.password
-    }
-  }
-  return await axios.post(`${URL_USERS}/register`, axConfig, {
-    signal, headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": API_BASEURL,
-      "Access-Control-Allow-Credentials": "true",
-    }
+  return axios.post(`${URL_USERS}/logout`, {}, {
+    signal,
+    ...axDefaultConfig
   })
 }
 
-export const APIlogOut = (signal?: any) => axios.post(`${URL_USERS}/logout`, {}, {
-  signal,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-    "Access-Control-Allow-Origin": API_BASEURL,
-    "Access-Control-Allow-Credentials": "true",
-  }
-}).catch()
+export const editUserInfo: EditFunction = async (signal, payload) => {
+
+  return axios.post(URL_USERS, payload, {
+    signal,
+    ...axDefaultConfig
+  })
+}

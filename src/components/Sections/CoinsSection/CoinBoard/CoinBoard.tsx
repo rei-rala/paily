@@ -1,17 +1,16 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { User } from "../../../../contexts/UserContext";
-import { Window } from "../../../../contexts/WindowContext";
 import { ICoin } from '../../../../services/coins'
 
 import { current } from '../../../../db/tempCoin.json'
+import Loading from "../../../Loading/Loading";
 
 interface ICoinBoard {
   shownCoin: ICoin
 }
 
 const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
-  const { loading, setLoading } = useContext(Window)
   const { displayCurrency: { currency, price, digits } } = useContext(User)
 
   const coinDetails = {
@@ -20,15 +19,10 @@ const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
     image: current.find(x => x.token === shownCoin.token ?? ' ')?.image || ''
   }
 
-  useEffect(() => {
-    currency === undefined
-      ? setLoading(true)
-      : setLoading(false)
-  }, [currency, setLoading])
 
   return (
-    loading || currency === undefined
-      ? <></>
+    currency === undefined
+      ? <Loading />
       : <>
         <Link
           className='coin'
@@ -36,7 +30,6 @@ const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
         >
           <fieldset>
             <legend> {coinDetails.name} - {coinDetails.token}</legend>
-
 
             <div className="priceContainer">
 

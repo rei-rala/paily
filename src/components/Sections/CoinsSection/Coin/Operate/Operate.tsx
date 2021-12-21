@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Navigate } from "react-router-dom";
-import { Modal } from "../../../contexts/ModalContext";
-import { getCriptoByToken } from "../../../services/coins";
+import { Modal } from "../../../../../contexts/ModalContext";
+import { getCriptoByToken } from "../../../../../services/coins";
+import { operations } from "../Coin";
 
 
 interface IOperate {
@@ -31,7 +32,6 @@ const Operate: React.FC<IOperate> = ({ operation, setOperate, currencyConversion
     buy: 0,
     sell: 0
   })
-
 
   useEffect(() => {
     const tokenName = typeof coinToken === 'string' && (coinToken).toUpperCase()
@@ -63,9 +63,9 @@ const Operate: React.FC<IOperate> = ({ operation, setOperate, currencyConversion
               )
           }
         >
-          {operation === 'BUY' ? 'Comprar' : 'Vender'}
+          {operation === operations.BUY ? 'Comprar' : 'Vender'}
         </button>
-        <button onClick={() => setOperate('')}>Atras</button>
+        <button onClick={() => setOperate(operations.DETAIL)}>Atras</button>
       </div>
     </>
     : <Navigate to='/404' />

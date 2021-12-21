@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { API_BASEURL, URL_CRIPTO } from './urls'
+import { URL_CRIPTO, axDefaultConfig } from './'
 
 export interface ICoin {
   name: string,
@@ -7,16 +7,22 @@ export interface ICoin {
   image: string,
   buy: number,
   sell: number,
+  change24h: number,
+  lastUpdated: number;
+  timestamp?: number
+}
+
+export interface ICoinData {
+  _id: string,
+  timestamp: number,
+  details: ICoin[],
 }
 
 export const getCriptoList: (signal?: any) => any = async (signal) => {
 
   const axConfig: AxiosRequestConfig = {
-    signal, headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": API_BASEURL,
-      "Access-Control-Allow-Credentials": "true",
-    }
+    signal,
+    ...axDefaultConfig
   }
 
   return await axios.get(`${URL_CRIPTO}/latestprices`, axConfig)
@@ -25,11 +31,8 @@ export const getCriptoList: (signal?: any) => any = async (signal) => {
 export const getCriptoByToken: (token: string, signal?: any) => any = async (token, signal) => {
 
   const axConfig: AxiosRequestConfig = {
-    signal, headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": API_BASEURL,
-      "Access-Control-Allow-Credentials": "true",
-    }
+    signal,
+    ...axDefaultConfig
   }
 
   return await axios.get(`${URL_CRIPTO}/latestprices?token=${token}`, axConfig)

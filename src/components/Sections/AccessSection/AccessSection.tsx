@@ -3,13 +3,13 @@ import React, { useContext, useState } from "react";
 import RegisterForm from "./RegisterForm/RegisterForm";
 import LoginForm from "./LogInForm/LogInForm";
 import { User } from "../../../contexts/UserContext";
-import { Window } from "../../../contexts/WindowContext";
 import { Modal } from "../../../contexts/ModalContext";
+import Loading from "../../Loading/Loading";
 
 export interface IAccessForm {
   cancel: boolean,
   setCancel: React.Dispatch<React.SetStateAction<boolean>>,
-  loading: boolean,
+  loading?: boolean,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   currentUser: any,
   setCurrentUser: React.Dispatch<React.SetStateAction<any>>,
@@ -24,27 +24,29 @@ export interface ICredentials {
 }
 
 const AccessSection: React.FC<{ sectionStr?: string }> = ({ sectionStr }) => {
-  const { loading, setLoading } = useContext(Window)
   const { currentUser, setCurrentUser } = useContext(User)
   const { configModal } = useContext(Modal)
 
 
   const [credentials, setCredentials] = useState<ICredentials | null>(null)
+  const [loading, setLoading] = useState(false)
   const [cancel, setCancel] = useState(false)
 
 
   return (
-    sectionStr === "register"
+    loading === true
+    ? <Loading />
+    : sectionStr === "register"
       ? <RegisterForm
         configModal={configModal}
-        loading={loading} setLoading={setLoading}
+        setLoading={setLoading}
         credentials={credentials} setCredentials={setCredentials}
         cancel={cancel} setCancel={setCancel}
         currentUser={currentUser} setCurrentUser={setCurrentUser}
       />
       : <LoginForm
         configModal={configModal}
-        loading={loading} setLoading={setLoading}
+        setLoading={setLoading}
         credentials={credentials} setCredentials={setCredentials}
         cancel={cancel} setCancel={setCancel}
         currentUser={currentUser} setCurrentUser={setCurrentUser}

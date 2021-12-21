@@ -31,26 +31,6 @@ const CoinStyled = styled.div`
       }
     }
   
-    .varianceTable {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-
-      div {
-        display: flex;
-        flex-direction: row !important;
-        justify-content: space-evenly;
-
-        width: 100%;
-
-        strong,
-        span {
-          max-width: 25%;
-          text-align: center;
-        }
-      }
-    }
-
     div:not(.coinDetails--header) {
       display: flex;
       flex-direction: column;

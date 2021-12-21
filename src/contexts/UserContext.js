@@ -20,7 +20,7 @@ const currencies = [
 ]
 
 export const UserContext = ({ children }) => {
-  const { scrollTop, setLoading } = useContext(Window)
+  const { scrollTop } = useContext(Window)
 
   const [currentUser, setCurrentUser] = useState(null)
   const notLoggedIn = currentUser === null || currentUser === undefined
@@ -47,7 +47,6 @@ export const UserContext = ({ children }) => {
     const sessionAbortController = new AbortController()
 
     if (notLoggedIn) {
-      setLoading(true)
       axios.get(URL_USERS, {
         signal: sessionAbortController.signal,
         withCredentials: true,
@@ -63,13 +62,12 @@ export const UserContext = ({ children }) => {
           }
         })
         .catch(err => { console.info('No se recupero sesion') })
-        .finally(() => setLoading(false))
     }
 
     return () => {
       sessionAbortController.abort()
     }
-  }, [notLoggedIn, setCurrentUser, setLoading])
+  }, [notLoggedIn, setCurrentUser])
 
   useEffect(() => {
     const currencyLocal = new Promise((res, rej) => {

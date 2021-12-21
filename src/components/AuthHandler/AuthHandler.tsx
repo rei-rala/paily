@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { User } from "../../contexts/UserContext";
-import { Window } from "../../contexts/WindowContext";
 import Loading from "../Loading/Loading";
 
 interface IAuthHandler {
@@ -10,12 +9,11 @@ interface IAuthHandler {
 
 const AuthHandler: React.FC<IAuthHandler> = ({ protectedPath }) => {
   const { currentUser } = useContext(User)
-  const { loading } = useContext(Window)
 
 
   return (
-    loading || currentUser === undefined
-      ? <></>
+    currentUser === undefined
+      ? <Loading />
       : currentUser === null
         ? <Navigate to='/login' replace />
         : <Navigate to={protectedPath || '/main'} />

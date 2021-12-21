@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ICoin } from '../../../services/coins'
+import { ICoin, ICoinData } from "../../../services/coins";
 
 import { Modal } from "../../../contexts/ModalContext";
 import Section from "../Section";
@@ -10,106 +10,113 @@ import CoinBoard from "./CoinBoard/CoinBoard";
 import CurrencyModifier from "../../CurrencyModifier/CurrencyModifier";
 import { User } from "../../../contexts/UserContext";
 import UserBalance from "../../UserBalance/UserBalance";
-import { Window } from "../../../contexts/WindowContext";
 import CoinSectionStyled from "./CoinsSectionStyled";
 
-
 import { io } from "socket.io-client";
-import { API_BASEURL } from '../../../services'
-interface IBalance {
-  token: string,
-  balance: number,
-}
-
-interface ICoinDataSocket {
-  timestamp: number,
-  details: ICoin[],
-}
+import { API_BASEURL } from "../../../services";
+import Loading from "../../Loading/Loading";
 
 let socket: any;
 
-
 const CoinsSection: React.FC = () => {
-  const { configModal } = useContext(Modal)
-  const { currentUser, displayCurrency } = useContext(User)
-  const { loading, setLoading } = useContext(Window)
+  const { configModal } = useContext(Modal);
+  const { currentUser, displayCurrency } = useContext(User);
 
-  const navigate = useNavigate()
-  const refreshPage = () => navigate(0)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const [coinsData, setCoinsData] = useState<ICoin[]>([])
+  const navigate = useNavigate();
+  const refreshPage = () => navigate(0);
+
+  const [coinsData, setCoinsData] = useState<ICoinData>({
+    _id: "",
+    timestamp: 0,
+    details: [],
+  });
 
   useEffect(() => {
-    coinsData.length === 0 && setLoading(true)
-    coinsData.length > 0 && setLoading(false)
-  }, [coinsData, setLoading])
+    if (coinsData._id === "") {
+      setLoading(true);
+      socket = io(API_BASEURL);
 
+      socket.on("criptoPrices", (newCoinsData: ICoinData) => {
+        coinsData._id !== newCoinsData._id && setCoinsData(newCoinsData);
+      });
+    } else {
+      setLoading(false);
+    }
+    return () => {
+      socket.disconnect();
+    };
+  }, [coinsData._id, setLoading]);
 
   useEffect(() => {
-    socket = io(API_BASEURL)
+    coinsData._id !== "" && coinsData.details.length === 0 && setError(true);
+  }, [coinsData]);
 
-    socket.on('criptoPrices', (coinsData: ICoinDataSocket) => {
-      setCoinsData(coinsData.details)
-      console.info(coinsData)
-    })
-  }, [])
+  return currentUser === undefined || displayCurrency === undefined || loading
+    ? <Loading />
+    : error
+      ? <>
+        <strong>Se produjo un error. Comprueba tu conexion a internet.</strong>
+        <div className="navigationBtns">
+          <button onClick={refreshPage}>Reintentar</button>
+          <Link to="/">
+            <button>Home</button>
+          </Link>
+        </div>
+      </>
+      : (
+        <Section title="Cripto">
+          <CurrencyModifier />
 
+          <CoinSectionStyled>
 
+            {/* TODO
+            {currentUser !== null && displayCurrency?.price > 0 && currentUser?.balances?.length > 0 && (
+              <div className="resume">
+                <h5>Tus saldos</h5>
 
-  return (
-    loading
-      ? <></>
-      : <Section
-        title='Cripto'
-      >
-        <CoinSectionStyled>
-          {
-            coinsData?.length > 0
-              ? <>
                 {
-                  displayCurrency?.price !== undefined && displayCurrency?.price > 0 && currentUser?.balances?.length > 0 && <>
-                    <div className="resume">
-
-                      <h5>Tus saldos</h5>
-                      {
-                        currentUser.balances.length > 1
-                          ? <span>
-                            {
-                              (currentUser.balances.reduce((prev: number, curr: IBalance) => prev + (curr.balance * (coinsData.find((x) => x.token === curr.token)?.sell || 1) * (displayCurrency.price)), 0)).toFixed(displayCurrency.digits)
-                            }
-                            {' '}
-                            {displayCurrency.currency}
-                          </span>
-                          : null
-                      }
-                    </div>
-
-                    <UserBalance userBalance={currentUser.balances} currency={displayCurrency.currency} price={displayCurrency.price} />
-                  </>
+                  currentUser.balances.reduce(
+                    (prev: number, curr: IBalance) => {
+                      return prev + (displayCurrency.price * curr.balance);
+                    }, 0)//.toFixed(displayCurrency.digits)
                 }
-                <CurrencyModifier />
-                {coinsData.map((coin: ICoin) => <CoinBoard key={coin.token} shownCoin={coin} />)}
+                {' '}
+                {displayCurrency.currency}
 
-                <div className="btnSection">
-                  <button onClick={() =>
-                    configModal(
-                      'Como operar',
-                      'Querido, cliquea una moneda y elige tu opcion'
-                    )
-                  }>How to buy or sell?</button>
-                </div>
-              </>
-              : <>
-                <strong>Se produjo un error. Comprueba tu conexion a internet.</strong>
-                <div className="navigationBtns">
-                  <button onClick={refreshPage}>Reintentar</button>
-                  <Link to='/'><button>Home</button></Link>
-                </div>
-              </>
-          }
-        </CoinSectionStyled>
-      </ Section >
-  )
-}
+              </div>
+            )}
+            */}
+
+            {
+              currentUser !== null && <UserBalance
+                userBalance={currentUser.balances}
+                displayCurrency={displayCurrency}
+                coinsData={coinsData}
+              />
+            }
+            {coinsData?.details?.map((coin: ICoin) => (
+              <CoinBoard key={coin.token} shownCoin={coin} />
+            ))}
+
+
+            <div className="btnSection">
+              <button
+                onClick={() =>
+                  configModal(
+                    "Como operar",
+                    "Querido, cliquea una moneda y elige tu opcion"
+                  )
+                }
+              >
+                How to buy or sell?
+              </button>
+            </div>
+          </CoinSectionStyled>
+        </Section>
+      );
+};
 
 export default CoinsSection;

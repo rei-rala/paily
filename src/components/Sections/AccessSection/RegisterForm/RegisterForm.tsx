@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { Link, Navigate } from "react-router-dom";
@@ -10,7 +9,8 @@ import FormGroup from "../FormGroup/FormGroup";
 import { IAccessForm } from "../AccessSection";
 
 import { REGEX } from "../../../../utils";
-import { API_BASEURL, URL_USERS } from "../../../../services";
+import { authenticate } from "../../../../services/user";
+import { AxiosResponse } from "axios";
 
 
 const registerSchema = Yup.object().shape({
@@ -35,17 +35,8 @@ const RegisterForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLo
     if (credentials !== undefined && credentials !== null && !cancel) {
       setLoading(true)
 
-      axios.post(`${URL_USERS}/register`, credentials, {
-        signal: registerAbortController.signal,
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          "Access-Control-Allow-Origin": API_BASEURL,
-          "Access-Control-Allow-Credentials": "true",
-        }
-      })
-
-        .then((response: any) => {
+      authenticate(credentials, 'register', registerAbortController.signal)
+        .then((response: AxiosResponse) => {
           if (response.status === 201 || response.status === 200) {
             setCurrentUser(response.data)
           } else {

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+import { AxiosResponse } from "axios";
 import { Link, Navigate } from "react-router-dom";
 
 import { Formik, Form, Field } from 'formik'
@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import Section from "../../Section";
 import LoginFormGroup from "../FormGroup/FormGroup";
 import { IAccessForm } from "../AccessSection";
-import { API_BASEURL, URL_USERS } from "../../../../services";
+import { authenticate } from "../../../../services/user";
 
 
 const loginSchema = Yup.object().shape({
@@ -33,16 +33,9 @@ const LoginForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoadi
     if (credentials !== undefined && credentials !== null && !cancel) {
       setLoading(true)
 
-      axios.post(`${URL_USERS}/login`, credentials, {
-        signal: loginAbortController.signal,
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          "Access-Control-Allow-Origin": API_BASEURL,
-          "Access-Control-Allow-Credentials": "true",
-        }
-      })
-        .then((response: any) => {
+
+      authenticate(credentials, 'login', loginAbortController.signal)
+        .then((response: AxiosResponse) => {
           if (response.status === 200 && response?.data !== undefined) {
             setCurrentUser(response.data)
           } else {

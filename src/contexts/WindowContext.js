@@ -8,10 +8,6 @@ export const WindowContext = (props) => {
 
   const [scrolled, setScrolled] = useState(false)
   const [currentPath, setCurrentPath] = useState(location)
-  const [loading, setLoading] = useState(false)
-
-  const working = () => setLoading(true)
-  const finishWorking = () => setLoading(false)
 
   const scrollTop = (behavior) => window.scrollTo({ top: 0, behavior });
 
@@ -40,7 +36,6 @@ export const WindowContext = (props) => {
         scrolled,
         scrollTop,
         currentPath,
-        loading, setLoading, working, finishWorking
       }}
     >
       {props.children}
