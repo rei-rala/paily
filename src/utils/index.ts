@@ -1,4 +1,5 @@
 import moment from 'moment'
+import 'moment/locale/es'
 
 export const REGEX = {
   // For login
@@ -12,8 +13,6 @@ export const REGEX = {
   urlFile: /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 }
 
-
-moment.locales()
 
 export const formatDateFromNow = (time: any, milliseconds?: boolean) => {
   if (!time) return

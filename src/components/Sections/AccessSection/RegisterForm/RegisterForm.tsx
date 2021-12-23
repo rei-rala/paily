@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { Link, Navigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import { IAccessForm } from "../AccessSection";
 import { REGEX } from "../../../../utils";
 import { authenticate } from "../../../../services/user";
 import { AxiosResponse } from "axios";
+import Loading from "../../../Loading/Loading";
 
 
 const registerSchema = Yup.object().shape({
@@ -26,17 +27,19 @@ const registerSchema = Yup.object().shape({
     .max(30, 'Contraseña  muy larga'),
 })
 
-const RegisterForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoading, currentUser, setCurrentUser, credentials, setCredentials, configModal }) => {
+const RegisterForm: React.FC<IAccessForm> = ({ currentUser, setCurrentUser, credentials, setCredentials, configModal }) => {
+  const [loading, setLoading] = useState(false)
+  const [cancel, setCancel] = useState(false)
 
   useEffect(() => {
     const registerAbortController = new AbortController()
-    const finish = () => { setCredentials(null); setLoading(false) }
 
     if (credentials !== undefined && credentials !== null && !cancel) {
       setLoading(true)
 
       authenticate(credentials, 'register', registerAbortController.signal)
         .then((response: AxiosResponse) => {
+          console.log(response)
           if (response.status === 201 || response.status === 200) {
             setCurrentUser(response.data)
           } else {
@@ -44,20 +47,19 @@ const RegisterForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLo
           }
         })
         .catch(({ message, response }) => { configModal("Error en registro", response?.data?.message || response?.data?.statusText || message) })
-        .finally(() => finish())
+        .finally(() => { setCredentials(null); setLoading(false); setCancel(false) })
     }
 
     return () => {
       cancel && credentials !== undefined && credentials !== null && registerAbortController.abort()
 
-      finish()
       setCancel(true)
     }
   }, [cancel, setCancel, credentials, setCredentials, setCurrentUser, configModal, setLoading])
 
   return (
     currentUser === undefined || loading
-      ? <></>
+      ? <Loading />
       : currentUser
         ? <Navigate to='/main' />
         : <Section title="Registro" >
@@ -68,7 +70,10 @@ const RegisterForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLo
                 password: ''
               }}
               validationSchema={registerSchema}
-              onSubmit={setCredentials}
+              onSubmit={(creds) => {
+                setCancel(false)
+                setCredentials(creds)
+              }}
             >
               {({ errors, touched }) => (
                 <Form>

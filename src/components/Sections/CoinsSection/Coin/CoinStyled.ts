@@ -29,6 +29,17 @@ const CoinStyled = styled.div`
       span {
         height:2rem;
       }
+
+      .balanceLoading span {
+        animation: Bounce calc(var(--animTimeSecs)* 1) ease infinite;
+
+        &:nth-child(2) {
+          animation-delay: calc(var(--animTimeSecs)* 0.1); 
+        }
+        &:nth-child(3) {
+          animation-delay: calc(var(--animTimeSecs)* 0.2); 
+        }
+      }
     }
   
     div:not(.coinDetails--header) {

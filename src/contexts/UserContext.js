@@ -8,7 +8,7 @@ export const User = createContext();
 
 const currencies = [
   {
-    currency: 'USDT',
+    currency: 'USD',
     price: 1,
     digits: 2
   },
@@ -24,11 +24,12 @@ export const UserContext = ({ children }) => {
 
   const [currentUser, setCurrentUser] = useState(null)
   const notLoggedIn = currentUser === null || currentUser === undefined
+  const [retrievingUser, setRetrievingUser] = useState(true)
 
   const [darkTheme, setDarkTheme] = useState(false)
   const [animations, setAnimations] = useState(false)
 
-  const [displayCurrency, setDisplayCurrency] = useState(currencies.USDT)
+  const [displayCurrency, setDisplayCurrency] = useState(currencies.USD)
 
   const logOut = async () => setCurrentUser(false)
 
@@ -47,6 +48,8 @@ export const UserContext = ({ children }) => {
     const sessionAbortController = new AbortController()
 
     if (notLoggedIn) {
+      setRetrievingUser(true)
+
       axios.get(URL_USERS, {
         signal: sessionAbortController.signal,
         withCredentials: true,
@@ -56,18 +59,18 @@ export const UserContext = ({ children }) => {
         }
       })
         .then((user) => {
-          console.log(user)
           if (user) {
-            setCurrentUser(user.data)
+            setCurrentUser(user.data);
+            setRetrievingUser(false)
           }
         })
-        .catch(err => { console.info('No se recupero sesion') })
+        .catch(err => { console.info('No se recupero sesion'); setRetrievingUser(false) })
     }
 
     return () => {
       sessionAbortController.abort()
     }
-  }, [notLoggedIn, setCurrentUser])
+  }, [notLoggedIn, setCurrentUser, setRetrievingUser])
 
   useEffect(() => {
     const currencyLocal = new Promise((res, rej) => {
@@ -84,8 +87,8 @@ export const UserContext = ({ children }) => {
         setDisplayCurrency(newCurrency)
       })
       .catch(() => {
-        localStorage.setItem('displayCurrency', 'USDT')
-        setDisplayCurrency(currencies.USDT)
+        localStorage.setItem('displayCurrency', 'USD')
+        setDisplayCurrency(currencies.USD)
       })
 
     const darkThemeLocal = new Promise((res, rej) => {
@@ -127,7 +130,8 @@ export const UserContext = ({ children }) => {
         currentUser, setCurrentUser, logOut,
         displayCurrency, changeDisplayCurrency,
         darkTheme, setDarkTheme,
-        animations, setAnimations, scrollToTop
+        animations, setAnimations, scrollToTop,
+        retrievingUser, setRetrievingUser
       }}
     >
       {children}

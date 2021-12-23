@@ -11,7 +11,7 @@ interface IDetail {
     price: number,
     digits: number
   },
-  userBalance: {
+  userBalance?: {
     token: string,
     balance: number
   }
@@ -23,15 +23,23 @@ const Detail: React.FC<IDetail> = ({ coin, setOperate, currencyConversion: { cur
 
       <div className='coinDetails--main'>
         <img className='coinDetails--image' src={coin.image} alt={coin.name} /> <h3>{coin.token}</h3>
-        <span>Tu saldo <strong> {userBalance.balance === -1 ? 0 : userBalance.balance} {coin.token}</strong></span>
+        {
+          userBalance !== undefined
+            ? <span>Tu saldo <strong> {userBalance.balance === -1 ? 0 : userBalance.balance} {coin.token}</strong></span>
+            : <i className="balanceLoading">
+              Cargando tus saldos <span>.</span><span>.</span><span>.</span>
+            </i>
+        }
         <span className='coinDetails--main--userBalance'>
           {
-            coin.token === currency ? null : `${currency} ${(userBalance.balance === -1 ? 0 : userBalance.balance * coin.sell * price).toFixed(digits)}`
+            userBalance !== undefined && coin.token !== currency
+              ? `${currency} ${(userBalance.balance === -1 ? 0 : userBalance.balance * coin.sell * price).toFixed(digits)}`
+              : null
           }
         </span>
         <div>
-          <span>Variacion 24h <b>{coin.change24h > 0 && '+'}{coin.change24h.toFixed(2)}%</b> </span>
-          <span>Ultimo precio <b>{coin.lastUpdated && formatDateFromNow(coin.lastUpdated, true)}</b></span>
+          <span>Variacion 24h: <b>{coin.change24h > 0 && '+'}{coin.change24h.toFixed(2)}%</b> </span>
+          <span>Ultima actualizacion: <b>{coin.lastUpdated && formatDateFromNow(coin.lastUpdated, true)}</b></span>
         </div>
       </div>
 

@@ -136,3 +136,26 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes Bounce {
+  0% {
+    position: relative;
+    top: 0;
+  }
+  30% {
+    position: relative;
+    top: -20%;
+  }
+  45% {
+    position: relative;
+    top: 0;
+  }
+  80% {
+    position: relative;
+    top: -5%;
+  }
+  100% {
+    position: relative;
+    top: 0;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import { Link, Navigate } from "react-router-dom";
 
@@ -10,6 +10,7 @@ import Section from "../../Section";
 import LoginFormGroup from "../FormGroup/FormGroup";
 import { IAccessForm } from "../AccessSection";
 import { authenticate } from "../../../../services/user";
+import Loading from "../../../Loading/Loading";
 
 
 const loginSchema = Yup.object().shape({
@@ -24,38 +25,42 @@ const loginSchema = Yup.object().shape({
 })
 
 
-const LoginForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoading, currentUser, setCurrentUser, credentials, setCredentials, configModal }) => {
+const LoginForm: React.FC<IAccessForm> = ({ currentUser, setCurrentUser, credentials, setCredentials, configModal }) => {
+  const [loading, setLoading] = useState(false)
+  const [cancel, setCancel] = useState(false)
 
   useEffect(() => {
     const loginAbortController = new AbortController()
-    const finish = () => { setCredentials(null); setLoading(false) }
 
     if (credentials !== undefined && credentials !== null && !cancel) {
       setLoading(true)
-
 
       authenticate(credentials, 'login', loginAbortController.signal)
         .then((response: AxiosResponse) => {
           if (response.status === 200 && response?.data !== undefined) {
             setCurrentUser(response.data)
           } else {
-            configModal("Error al iniciar sesion", response?.data?.message || response?.data?.statusText + " WTF Unexpected")
+            configModal("Error al iniciar sesion", 'Verifique sus credenciales' /* || response?.data?.message || response?.data?.statusText + " WTF Unexpected" */)
           }
         })
-        .catch(({ message, response }) => { configModal("Error al iniciar sesion", response?.data?.message || response?.data?.statusText || message) })
-        .finally(() => finish())
+        .catch((error) => {
+          error.response?.status === 401
+            ? configModal("Error al iniciar sesion", 'Verifique sus credenciales')
+            : configModal("Error inesperado", error.response?.status?.message || error.response?.data?.statusText || error.message)
+        })
+        .finally(() => { setCredentials(null); setLoading(false); setCancel(false) })
+
     }
 
     return () => {
       cancel && credentials !== undefined && credentials !== null && loginAbortController.abort()
-      finish()
       setCancel(true)
     }
-  }, [cancel, setCancel, credentials, setCredentials, setCurrentUser, configModal, setLoading])
+  }, [cancel, credentials, setCredentials, setCurrentUser, configModal, setLoading])
 
   return (
     currentUser === undefined || loading
-      ? <></>
+      ? <Loading />
       : currentUser
         ? <Navigate to='/main' />
         : <Section title="Iniciar sesión">
@@ -66,10 +71,14 @@ const LoginForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoadi
                 password: ''
               }}
               validationSchema={loginSchema}
-              onSubmit={setCredentials}
+              onSubmit={(creds) => {
+                setCancel(false)
+                setCredentials(creds)
+              }}
             >
               {({ errors, touched }) => (
-                <Form>
+
+                < Form >
 
                   <LoginFormGroup
                     element={<Field name='email' placeholder='Email' maxLength={50} />}
@@ -83,7 +92,7 @@ const LoginForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoadi
                     touch={touched.password}
                   />
 
-                  <button type='submit'>Iniciar</button>
+                  <button type='submit'>Iniciar sesión</button>
 
                 </Form>
               )}
@@ -93,7 +102,7 @@ const LoginForm: React.FC<IAccessForm> = ({ cancel, setCancel, loading, setLoadi
               {currentUser !== undefined && <span> No tienes cuenta? <Link to='/register'> Registrarse </Link></span>}
             </div>
           </div >
-        </Section>
+        </Section >
   )
 }
 

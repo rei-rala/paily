@@ -6,6 +6,7 @@ import { faArrowLeft, faArrowCircleUp } from "@fortawesome/free-solid-svg-icons"
 import { SectionStyled } from "./SectionStyled";
 import { Window } from "../../contexts/WindowContext";
 import { User } from "../../contexts/UserContext";
+import Loading from "../Loading/Loading";
 
 interface ISection {
   children?: React.ReactNode;
@@ -16,7 +17,7 @@ interface ISection {
 
 const Section: React.FC<ISection> = ({ children, className, title }, props) => {
   const { currentPath, scrolled } = useContext(Window)
-  const { currentUser, scrollToTop } = useContext(User)
+  const { currentUser, scrollToTop, retrievingUser } = useContext(User)
 
   const [hideGoBack, setHideGoBack] = useState(false)
 
@@ -32,8 +33,8 @@ const Section: React.FC<ISection> = ({ children, className, title }, props) => {
   }, [currentPath])
 
   return (
-    currentUser === undefined
-      ? <></>
+    currentUser === undefined || retrievingUser
+      ? <Loading />
       : (currentUser === null || currentUser === false) && ['/login', '/register', '/404'].every(path => path !== currentPath)
         ? <Navigate to='/login' replace />
         : <SectionStyled className={`section ${className ?? ''}`

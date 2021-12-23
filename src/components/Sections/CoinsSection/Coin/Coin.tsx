@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { useParams, Navigate } from "react-router";
+import { useParams } from "react-router";
 import { User } from "../../../../contexts/UserContext";
 
 import { ICoin, ICoinData } from "../../../../services/coins";
@@ -18,7 +18,6 @@ import { IBalance } from "../../../../services/user";
 import CurrencyModifier from "../../../CurrencyModifier/CurrencyModifier";
 
 let socket: any;
-let timedOut = false;
 
 export const operations = {
   DETAIL: "DETAIL",
@@ -31,7 +30,7 @@ const Coin = () => {
   const { coinToken } = useParams();
 
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({ error: false, message: '' });
   const [userOperation, setUserOperation] = useState(operations.DETAIL);
 
   const [currentCoinDetails, setCurrentCoinDetails] = useState<ICoin>({
@@ -54,76 +53,79 @@ const Coin = () => {
 
     socket.on("criptoPrices", (newCoinsData: ICoinData) => {
       const foundCoin = newCoinsData?.details?.find(
-        (coin) => coin.token === coinToken
+        (coin) => coin.token === coinToken?.toUpperCase()
       );
       const coinFull = foundCoin && {
         ...foundCoin,
-        image: current.find((coin) => coin.token === coinToken)?.image || "",
+        image: current.find((coin) => coin.token === coinToken?.toUpperCase())?.image || "",
         sell: foundCoin.buy * 0.95,
       };
-      coinFull && setCurrentCoinDetails(coinFull);
+
+      coinFull === undefined
+        ? setError({ error: true, message: "No se encontró la moneda" })
+        : setCurrentCoinDetails(coinFull)
     });
+
     return () => {
       socket.disconnect();
     };
-  }, [coinToken]);
-
-  useEffect(() => {
-    new Promise((res, rej) => {
-      const balances = currentUser?.balances?.find(
-        (balance: IBalance) => balance.token === currentCoinDetails.token
-      );
-
-      !!balances
-        ? res(balances)
-        : timedOut && rej("No se encontro el balance")
-    })
-      .then((balances: any) => {
-        setCurrentUserBalance(balances);
-      })
-      .catch(() => {
-        setError(true);
-        setLoaded(true);
-      });
-  }, [currentUser, currentCoinDetails]);
+  }, [coinToken, setError]);
 
   useLayoutEffect(() => {
-    currentUserBalance.token !== "" &&
-      currentCoinDetails.name !== "" &&
-      setLoaded(true);
-  }, [currentUserBalance, currentCoinDetails]);
+    currentUser?.balances !== undefined
+      && currentCoinDetails?.token !== ''
+      && new Promise((res) => {
+        const balances = currentUser?.balances?.find(
+          (balance: IBalance) => balance.token === currentCoinDetails.token
+        );
+        res(balances)
+      })
+        .then((balances: any) => {
+          setCurrentUserBalance(balances);
+        })
+        .catch(() => {
+          setError({ error: true, message: "Error obteniendo datos de tu balance" })
+        })
+        .finally(() => setLoaded(true))
 
-  return !loaded ? (
-    <Loading />
-  ) : error ? (
-    <Navigate replace to="/404" />
-  ) : (
-    <Section title={currentCoinDetails.name}>
-      <CurrencyModifier />
+  }, [currentUser, currentCoinDetails]);
 
-      <div className="sep">
-        <hr />
-      </div>
 
-      <CoinStyled>
-        {userOperation === operations.DETAIL ? (
-          <Detail
-            userBalance={currentUserBalance}
-            coin={currentCoinDetails}
-            setOperate={setUserOperation}
-            currencyConversion={displayCurrency}
-          />
-        ) : (
-          <Operate
-            userBalance={currentUserBalance}
-            operation={userOperation}
-            setOperate={setUserOperation}
-            currencyConversion={displayCurrency}
-          />
-        )}
-      </CoinStyled>
-    </Section>
-  );
+  return !loaded && !error.error
+    ? <Loading />
+    : error.error
+      ? <Section
+        title='Error'
+      >
+        <h4>{error.message}</h4>
+      </Section>
+      : (
+        <Section title={currentCoinDetails.name}>
+          <CurrencyModifier />
+
+          <div className="sep">
+            <hr />
+          </div>
+
+          <CoinStyled>
+            {userOperation === operations.DETAIL ? (
+              <Detail
+                userBalance={currentUserBalance}
+                coin={currentCoinDetails}
+                setOperate={setUserOperation}
+                currencyConversion={displayCurrency}
+              />
+            ) : (
+              <Operate
+                userBalance={currentUserBalance}
+                operation={userOperation}
+                setOperate={setUserOperation}
+                currencyConversion={displayCurrency}
+              />
+            )}
+          </CoinStyled>
+        </Section>
+      );
 };
 
 export default Coin;
