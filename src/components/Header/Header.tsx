@@ -20,7 +20,6 @@ export interface IMenu {
 const Header: React.FC = () => {
   const { scrolled } = useContext(Window)
   const { currentUser } = useContext(User)
-
   const [userData, setUserData] = useState<IUser | null>(null)
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
 
@@ -40,7 +39,7 @@ const Header: React.FC = () => {
             : null
       }
 
-      <HeaderStyled className={scrolled && !activeMenu ? 'scrolled' : ''}>
+      <HeaderStyled scrolled={scrolled}>
         <BurgerMenu activeMenu={activeMenu} setActiveMenu={setActiveMenu} user={userData} />
         <Brand />
         <UserMenuButton activeMenu={activeMenu} setActiveMenu={setActiveMenu} user={userData} />

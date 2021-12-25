@@ -119,7 +119,6 @@ const GlobalStyles = createGlobalStyle`
 
 
   .mainBackBtn {
-    display: none !important;
     color: var(--bkgColor);
     border: 1px solid var(--borderColor);
     background: var(--bkgColor);
@@ -132,10 +131,6 @@ const GlobalStyles = createGlobalStyle`
 
     cursor: pointer;
     transition: opacity calc(var(--animTimeSecs)* 0.33)  ease-in-out;
-
-    &.notVisible {
-      opacity: 0;
-    }
 
     .toTopIcon {
       width: 2rem;

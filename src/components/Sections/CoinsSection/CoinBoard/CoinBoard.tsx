@@ -15,7 +15,7 @@ const CoinBoard: React.FC<ICoinBoard> = ({ shownCoin }) => {
 
   const coinDetails = {
     ...shownCoin,
-    sell: shownCoin.buy * 0.925 ?? 0,
+    sell: shownCoin.buy * 0.95 ?? 0,
     image: current.find(x => x.token === shownCoin.token ?? ' ')?.image || ''
   }
 

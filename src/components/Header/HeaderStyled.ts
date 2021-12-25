@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-const HeaderStyled = styled.header`
-
+const HeaderStyled = styled.header<{ scrolled?: boolean }>`
   --sizeSquare: 2rem;
   --shadowOnHover:0 0 0px 2px var(--headerFooterColor);
   
@@ -19,11 +18,8 @@ const HeaderStyled = styled.header`
   
   transition: opacity calc(var(--animTimeSecs)* 0.5);
   cursor: default;
-
-  &.scrolled {
-    opacity: var(--minOpacity);
-  }
-
+  
+  opacity: ${(props) => props.scrolled === true ? 'var(--minOpacity)' : '1'};
       
   .userImg, .burgerMenu {
     border: 1px solid var(--borderColor);

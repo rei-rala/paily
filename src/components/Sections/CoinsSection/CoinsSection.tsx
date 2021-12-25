@@ -107,11 +107,11 @@ const CoinsSection: React.FC = () => {
                 onClick={() =>
                   configModal(
                     "Como operar",
-                    "Querido, cliquea una moneda y elige tu opcion"
+                    "Click en algunas de las cripto y elige tu operacion 😉",
                   )
                 }
               >
-                How to buy or sell?
+                Como comprar y vender?
               </button>
             </div>
           </CoinSectionStyled>

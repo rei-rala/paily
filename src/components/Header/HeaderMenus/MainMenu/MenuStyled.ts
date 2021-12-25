@@ -5,11 +5,13 @@ const MenuStyled = styled.div`
   top: var(--headerHeight);
   left: 0;
 
-  display:flex;
+  &, & nav {
+    display:flex;
   flex-direction:column;
   align-items:center;
   gap:0.5rem;
-
+  }
+  
   background-color:  var(--bkgColor);
   border: 0 solid var(--borderColor);
   border-bottom-width: 5px;

@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const SectionStyled = styled.section`
+export const SectionStyled = styled.section<{ scrolled?: boolean }>`
+
+ .backToTopBtn {
+  opacity: ${props => props.scrolled === true ? '1' : '0'}; 
+} 
 
 display: flex;
 flex-direction: column;

@@ -27,8 +27,8 @@ const Section: React.FC<ISection> = ({ children, className, title }, props) => {
   useEffect(() => {
     const lastPath = sessionStorage.getItem('lastPath')
     setHideGoBack(
-      (lastPath !== '/login' && lastPath !== '/register')
-      //|| ['/', '/404', '/login', '/register'].every(path => path !== currentPath)
+      lastPath === '/login' || lastPath === '/register'
+      || ['/login', '/register'].some(path => path === currentPath)
     )
   }, [currentPath])
 
@@ -37,8 +37,10 @@ const Section: React.FC<ISection> = ({ children, className, title }, props) => {
       ? <Loading />
       : (currentUser === null || currentUser === false) && ['/login', '/register', '/404'].every(path => path !== currentPath)
         ? <Navigate to='/login' replace />
-        : <SectionStyled className={`section ${className ?? ''}`
-        } {...props}>
+        : <SectionStyled
+          scrolled={scrolled}
+          className={`section ${className ?? ''}`
+          } {...props}>
 
           {
             hideGoBack
@@ -60,7 +62,7 @@ const Section: React.FC<ISection> = ({ children, className, title }, props) => {
           {children}
 
           <div
-            className={`backToTopBtn ${scrolled ? '' : 'notVisible'}`}
+            className='backToTopBtn'
             title='Click para ir arriba'
             onClick={scrollToTop}
           >
