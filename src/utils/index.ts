@@ -15,13 +15,26 @@ export const REGEX = {
 
 
 export const formatDateFromNow = (time: any, milliseconds?: boolean) => {
-  if (!time) return
 
-  const timeRect = !isNaN(time)
-    ? milliseconds
-      ? parseInt(time) * 1000
-      : parseInt(time)
-    : 0
+  try {
+    const timeRect = !isNaN(time)
+      ? milliseconds
+        ? parseInt(time) * 1000
+        : parseInt(time)
+      : 0
 
-  return moment(timeRect).fromNow()
+    return moment(timeRect).fromNow()
+
+  } catch (error) {
+    console.warn(error)
+  }
+}
+
+export const formatFullDate = (time: any) => {
+  try {
+    return moment(time).format('LLLL')
+  }
+  catch (err) {
+    console.warn(err)
+  }
 }

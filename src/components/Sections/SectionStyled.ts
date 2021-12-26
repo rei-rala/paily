@@ -194,71 +194,79 @@ img {
 
   form {
     max-width: 80%;
+  }
+  .profileEditGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    
+    padding: 1rem 0;
+    text-align:center;
 
-    .profileEditGroup {
-      display: flex;
-      flex-direction: column;
+    input {
+      width: 100%;
+    }
+    
+    img {
+      object-fit: contain;
+      width: 100%;
+      height: 15rem;
+      max-height: 40%;
+    }
+
+    .subGroup.url {
+      display:flex;
+      flex-direction:column;
       align-items: center;
-      gap: 0.5rem;
-      
-      padding: 1rem 0;
-      text-align:center;
+      justify-content: center;
+      span {
+        max-width: 80%;
+        text-align: justify;
+        word-break: break-all;
+      }
+    }
 
+    &.image .subGroup {
+      position: relative;
+      gap: 0.1rem;
+      width: 100%;
+
+      input, button {
+        border-radius: 0.25rem;
+      }
       input {
-        width: 100%;
+        flex:4;
       }
-      
-      img {
-        object-fit: contain;
-        width: 100%;
-        height: 15rem;
-        max-height: 40%;
+      button {
+        padding: 0;
+        font-size: 0.7rem;
       }
 
-      &.image .subGroup {
-        position: relative;
-        display:flex;
-        gap: 0.1rem;
+      .removeImg {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.25rem;
 
-        width: 100%;
+        display:grid;
+        place-items: center;
 
+        width:2rem;
+        height:2rem;
 
-        input, button {
-          border-radius: 0.25rem;
+        cursor: pointer;
+
+        svg {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+          transition: transform calc( var(--animTimeSecs) * 0.5);
         }
-        input {
-          flex:4;
-        }
-        button {
-          padding: 0;
-          font-size: 0.7rem;
-        }
-
-        .removeImg {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          padding: 0.25rem;
-
-          display:grid;
-          place-items: center;
-
-          width:2rem;
-          height:2rem;
-
-          cursor: pointer;
-
-          svg {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            transition: transform calc( var(--animTimeSecs) * 0.5);
-          }
-          
-          svg:hover,
-          svg:active {
-            transform: scale(1.1);
-          }
+        
+        svg:hover,
+        svg:active {
+          transform: scale(1.1);
         }
       }
     }

@@ -8,6 +8,9 @@ import { faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import Section from '../Section'
 import { User } from "../../../contexts/UserContext";
 import { editUserInfo } from '../../../services/user';
+import { formatFullDate } from '../../../utils';
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+
 //const defImgUrl = "https://icon-library.com/images/no-photo-available-icon/no-photo-available-icon-20.jpg"
 
 const userConfiguration = Yup.object().shape({
@@ -19,6 +22,7 @@ const userConfiguration = Yup.object().shape({
 
 const UserSection = () => {
   const { currentUser } = useContext(User)
+  const [copied, setCopied] = useState(false)
 
   //const [imageUrlPreview, setImagePreviewUrl] = useState('')
   const [tempUserImage, setTempUserImage] = useState<string | null>(null)
@@ -42,8 +46,9 @@ const UserSection = () => {
           <Form>
 
             <div className="profileEditGroup">
-              <span>{currentUser.email}</span>
+              <b>{currentUser.email}</b>
               <span className='faint'>{currentUser.id}</span>
+              <span className='smaller'>Registrado el: {formatFullDate(currentUser.createdAt)}</span>
             </div>
 
             <hr />
@@ -61,7 +66,10 @@ const UserSection = () => {
 
               <div className='subGroup' title='URL Actual'>
                 <span> {currentUser.image ?? ''} </span>
-                <button type='button'>Copiar actual</button>
+                <CopyToClipboard onCopy={() => setCopied(true)} text={currentUser.image}>
+                  <button type='button'>{copied ? 'Copiado!' : 'Copiar'}</button>
+                </CopyToClipboard>
+
               </div>
               <div className='subGroup'>
                 <Field type='url' name='newImage' placeholder='URL a imagen' required={false} />

@@ -10,6 +10,7 @@ export interface IUser {
   id: string,
   email: string;
   image: string,
+  createdAt: any,
   balances: IBalance[]
 }
 
@@ -39,6 +40,14 @@ export const APIlogOut: LogOut = (signal) => {
 export const editUserInfo: EditFunction = async (signal, payload) => {
 
   return axios.post(URL_USERS, payload, {
+    signal,
+    ...axDefaultConfig
+  })
+}
+
+export const getOtherUserInfo: (id: string, signal?: any) => Promise<AxiosResponse<IUser>> = async (id, signal) => {
+
+  return axios.get(`${URL_USERS}/${id}`, {
     signal,
     ...axDefaultConfig
   })

@@ -16,6 +16,7 @@ import TestSection from './components/Sections/TestSection/TestSection';
 
 import UserConfig from './components/Sections/UserSection/UserConfig/UserConfig';
 import UserSection from './components/Sections/UserSection/UserSection';
+import OtherUsersSection from './components/Sections/OtherUsersSection/OtherUsersSection';
 
 function App() {
   const { darkTheme, animations } = useContext(User)
@@ -32,7 +33,7 @@ function App() {
       < Modal />
 
       <Routes>
-        <Route path='/test' element={<TestSection />} />
+        <Route path='/' element={<TestSection />} />
         <Route path='/cripto/test' element={<TestSection />} />
         <Route path='/cripto/:coinToken/test' element={<TestSection />} />
 
@@ -44,6 +45,7 @@ function App() {
         <Route path='/cripto/:coinToken' element={<Coin />} />
 
         <Route path='/user/' element={<UserSection />} />
+        <Route path='/user/:userId' element={<OtherUsersSection />} />
         <Route path='/user/config' element={<UserConfig />} />
 
         <Route path='*' element={<Navigate replace to='/404' />} />

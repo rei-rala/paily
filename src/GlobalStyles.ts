@@ -100,6 +100,9 @@ const GlobalStyles = createGlobalStyle`
   .faint {
     opacity: 0.5;
   }
+  .smaller {
+    font-size: smaller;
+  }
 
   .sep {
     display: block ; 
@@ -143,7 +146,7 @@ const GlobalStyles = createGlobalStyle`
 
   .mainBackBtn,
   .backToTopBtn {
-    z-index: 99;
+    z-index: 9;
     &:hover,
     &:active {
       transform: scale(1.1);

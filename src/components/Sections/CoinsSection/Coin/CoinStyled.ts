@@ -31,6 +31,7 @@ const CoinStyled = styled.div`
       }
 
       .balanceLoading span {
+        position:relative;
         animation: Bounce calc(var(--animTimeSecs)* 1) ease infinite;
 
         &:nth-child(2) {

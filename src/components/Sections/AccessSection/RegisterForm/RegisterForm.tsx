@@ -41,7 +41,7 @@ const RegisterForm: React.FC<IAccessForm> = ({ currentUser, setCurrentUser, cred
         .then((response: AxiosResponse) => {
           console.log(response)
           if (response.status === 201 || response.status === 200) {
-            setCurrentUser(response.data)
+            setCurrentUser(response.data._doc)
           } else {
             configModal("Error en registro", response?.data?.message || response?.data?.statusText)
           }
